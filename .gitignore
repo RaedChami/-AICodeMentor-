@@ -1,0 +1,13 @@
+.idea/
+target/
+node_modules/
+tmpDirectory/
+models/
+java-llama.cpp/
+libgpu/
+.mvn/
+src/main/resources/META-INF/resources/assets
+*.iml
+*.log
+*.jar
+dev_db.sqlite

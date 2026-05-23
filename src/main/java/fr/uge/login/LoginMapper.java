@@ -1,0 +1,51 @@
+package fr.uge.login;
+
+import fr.uge.login.dto.LoginDTO;
+
+import java.util.Objects;
+
+/**
+ * Mapping class for a user.
+ * Allows to convert a user entity into a DTO and vice versa
+ */
+public class LoginMapper {
+    /**
+     * Converts a Login entity into a DTO
+     * @param login Login entity
+     * @return converted entity
+     */
+    public static LoginDTO convertToDTO(Login login) {
+        Objects.requireNonNull(login);
+        var id = (login.getId() == null) ? 0L : login.getId();
+        return new LoginDTO(
+                id,
+                login.getName(),
+                login.getLastName(),
+                login.getRole()
+        );
+    }
+
+    /**
+     * Converts a LoginDTO into an entity
+     * @param loginDTO DTO of login
+     * @return converted DTO
+     * @throws NoSuchFieldException if a required field is missing in the target class
+     * @throws IllegalAccessException if a field cannot be accessed during mapping
+     */
+    public static Login convertToEntity(LoginDTO loginDTO) throws NoSuchFieldException, IllegalAccessException {
+        Objects.requireNonNull(loginDTO);
+        var login =  new Login(
+                loginDTO.name(),
+                loginDTO.lastName(),
+                loginDTO.role()
+        );
+        if (loginDTO.id() > 0) { // reflexion used to restore the ID of the login entity
+            var idField = Login.class.getDeclaredField("id");
+            idField.setAccessible(true);
+            idField.set(login, loginDTO.id());
+        }
+
+        return login;
+    }
+
+}
